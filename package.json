@@ -1,14 +1,11 @@
 {
   "name": "git-sha-plugin",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Retrieve the Git SHA of the latest commit.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "git-bundle-sha": "0.0.2"
-  }
+  "author": "iptpv",
+  "license": "ISC"
 }

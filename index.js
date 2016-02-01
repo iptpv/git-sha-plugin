@@ -1,5 +1,5 @@
-var gitsha = require('git-bundle-sha');
 var GITSHA_REGEXP = /\[gitsha\]/gi;
+var exec = require('child_process').execSync;
 
 function GitSHAPlugin(options) {
   var opts = options || {};
@@ -7,18 +7,15 @@ function GitSHAPlugin(options) {
 }
 
 GitSHAPlugin.prototype.apply = function(compiler) {
-  var _this = this;
+  var sha = exec('git log -1 --format=%H', {encoding: 'utf-8'}).slice(0, this.shaLength);
+
+  compiler.options.devServer.publicPath = compiler.options.devServer.publicPath.replace(GITSHA_REGEXP, sha);
 
   compiler.plugin('emit', function(compilation, callback) {
-    gitsha([], {
-      length: _this.shaLength
-    }, function(err, sha) {
-      if (err) throw err;
-      compilation.mainTemplate.plugin('asset-path', function(p) {
-        return p.replace(GITSHA_REGEXP, sha);
-      });
-      callback();
+    compilation.mainTemplate.plugin('asset-path', function(p) {
+      return p.replace(GITSHA_REGEXP, sha);
     });
+    callback();
   });
 };
 
